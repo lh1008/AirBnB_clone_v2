@@ -44,19 +44,19 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             "update"
-            args = my_list[1:]
-            for arg in args:
-                if "=" in args:
-                    div_args = arg.split("=")
-                    if div_args[1][0] == "\"":
-                        div_args[1] = div_arg[1].replace("_", " ").replace('"',
-                                      '\\"')
-                        div_args[1] = div_arg[1][-1]
-                    elif div_args[1].isdigit():
-                        div_args[1] = int(div_args[1])
-                    else:
-                        div_args[1] = float(div_args[1])
-                    setattr(obj, div_args[0], div_args[1])
+            arg = my_list[1:-1]
+            for i in arg:
+                new = i.split("=")
+                if new[1][0] == "\"":
+                    new[1] = new[1][1:-1]
+                    new[1] = new[1].replace('_', ' ').replace(
+                             '"', '\\"')
+                elif new[1].isdigit():
+                    new[1] = int(new[1])
+                else:
+                    new[1] = float(new[1])
+                setattr(obj, new[0], new[1])
+            "update"
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
