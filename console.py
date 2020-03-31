@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
             for arg in args:
                 if "=" in args:
                     div_args = arg.split("=")
-                    setattr(obj, arg_split[0], arg_split[1])
+                    setattr(obj, div_args[0], div_args[1])
                     if div_args[1][0] == "\"":
                         div_args[1] = div_arg[1].replace("_", " ").replace('"',
                                       '\\"')
