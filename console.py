@@ -11,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+from ast import literal_eval
 
 
 class HBNBCommand(cmd.Cmd):
@@ -43,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
-            "update"
+            #update
             for it in my_list[1:]:
                 s = it.split("=")
                 if s[1][0] == "\"":
@@ -52,7 +53,6 @@ class HBNBCommand(cmd.Cmd):
                 elif s[1].isdigit():
                     setattr(obj, s[0], s[1])
                 setattr(obj, s[0], s[1]
-            "update"
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
