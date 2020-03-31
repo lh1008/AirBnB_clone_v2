@@ -48,7 +48,6 @@ class HBNBCommand(cmd.Cmd):
             for arg in args:
                 if "=" in args:
                     div_args = arg.split("=")
-                    setattr(obj, div_args[0], div_args[1])
                     if div_args[1][0] == "\"":
                         div_args[1] = div_arg[1].replace("_", " ").replace('"',
                                       '\\"')
@@ -57,6 +56,7 @@ class HBNBCommand(cmd.Cmd):
                         div_args[1] = int(div_args[1])
                     else:
                         div_args[1] = float(div_args[1])
+                    setattr(obj, div_args[0], div_args[1])
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
