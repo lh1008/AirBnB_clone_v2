@@ -48,10 +48,11 @@ class HBNBCommand(cmd.Cmd):
             for arg in args:
                 if "=" in args:
                     div_args = arg.split("=")
+                    setattr(obj, arg_split[0], arg_split[1])
                     if div_args[1][0] == "\"":
-                        div_args[1] = div_arg[1][-1]
                         div_args[1] = div_arg[1].replace("_", " ").replace('"',
                                       '\\"')
+                        div_args[1] = div_arg[1][-1]
                     elif div_args[1].isdigit():
                         div_args[1] = int(div_args[1])
                     else:
