@@ -45,14 +45,18 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             #update
-            for it in my_list[1:]:
-                s = it.split("=")
-                if s[1][0] == "\"":
-                    s[1] = s[1][1:-1]
-                    s[1] = s[1].replace('_', ' ').replace('"', '\\"')
-                elif s[1].isdigit():
+            _list = my_list[1:]
+            for i in _list:
+                if "=" in i:
+                    s = i.split("=")
+                    if s[1][0] == "\"":
+                        s[1] = s[1][1:-1]
+                        s[1] = s[1].replace('_', ' ').replace('"', '\\"')
+                    elif s[1].isdigit():
+                        s[1] = int(s[1])
+                    else:
+                        s[1] = float(s[1])
                     setattr(obj, s[0], s[1])
-                setattr(obj, s[0], s[1]
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
