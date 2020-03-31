@@ -44,18 +44,14 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             "update"
-            arg = my_list[1:-1]
-            for i in arg:
-                new = i.split("=")
-                if new[1][0] == "\"":
-                    new[1] = new[1][1:-1]
-                    new[1] = new[1].replace('_', ' ').replace(
-                             '"', '\\"')
-                elif new[1].isdigit():
-                    new[1] = int(new[1])
-                else:
-                    new[1] = float(new[1])
-                setattr(obj, new[0], new[1])
+            for it in my_list[1:]:
+                s = it.split("=")
+                if s[1][0] == "\"":
+                    s[1] = s[1][1:-1]
+                    s[1] = s[1].replace('_', ' ').replace('"', '\\"')
+                elif s[1].isdigit():
+                    setattr(obj, s[0], s[1])
+                setattr(obj, s[0], s[1]
             "update"
             obj.save()
             print("{}".format(obj.id))
