@@ -43,6 +43,19 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
+            "update"
+            args = my_list[1:]
+            for arg in args:
+                if "=" in args:
+                    div_args = arg.split("=")
+                    if div_args[1][0] == "\"":
+                        div_args[1] = div_arg[1].replace("_", " ").replace('"',
+                                      '\\"')
+                        div_args[1] = div_arg[1][-1]
+                    elif div_args[1].isdigit():
+                        div_args[1] = int(div_args[1])
+                    else:
+                        div_args[1] = float(div_args[1])
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
