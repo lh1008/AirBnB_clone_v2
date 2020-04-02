@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 """This is the state class"""
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
+from models.city import City, Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 import models
 import os
 
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """This is the class for State
     Attributes:
         name: input name
