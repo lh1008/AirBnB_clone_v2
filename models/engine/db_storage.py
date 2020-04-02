@@ -37,7 +37,7 @@ class DBStorage:
         """show all the instances"""
         instances = {}
         if cls is None:
-            _cls = ['State', 'City']
+            _cls = ['State', 'City', 'User']
 
             for cl in _cls:
                 objs = self.__session.query(eval(cl)).all()
