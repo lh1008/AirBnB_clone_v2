@@ -10,6 +10,8 @@ from models.review import Review
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+
+
 class DBStorage:
     """This class save instances to a mysql db and
     get instances from the db
@@ -19,6 +21,7 @@ class DBStorage:
     """
     __engine = None
     __session = None
+
     def __init__(self):
         """create a engine and drop all tables if is necesart"""
         self.__engine = create_engine(
@@ -29,33 +32,38 @@ class DBStorage:
                 os.getenv("HBNB_MYSQL_DB")), pool_pre_ping=True)
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
+
     def all(self, cls=None):
         """show all the instances"""
         instances = {}
         if cls is None:
-            _cls = ["State", "City", "User", "Place", "Review"]
+            _cls = ["State", "City"]
 
-            for cl in all_cls:
+            for cl in _cls:
                 objs = self.__session.query(eval(cl))
-                for obj in objs:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    instances[key] = obj
+            for obj in objs:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                instances[key] = obj
         else:
             objs = self.__session.query(cls).all()
             for obj in objs:
                 key = "{}.{}".format(type(obj).__name__, obj.id)
                 instances[key] = obj
         return instances
+
     def new(self, obj):
         """add an object into the database"""
         self.__session.add(obj)
+
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
+
     def delete(self, obj=None):
         """ delete from the current database session"""
         if obj is not None:
             self.__session.delete(obj)
+
     def reload(self):
         """ reload all the objs"""
         Base.metadata.create_all(self.__engine)
