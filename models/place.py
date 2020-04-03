@@ -6,6 +6,15 @@ from sqlalchemy.orm import relationship
 from os import getenv
 
 
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True,
+                             nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True,
+                             nullable=False))
+
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -39,6 +48,8 @@ class Place(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan')
+        amenities = relationship('Amenity', secondary=place_amenity,
+                                 backref='places', viewonly=False)
 
     else:
         @property
@@ -50,3 +61,20 @@ class Place(BaseModel, Base):
                 if self.id == review.place_id:
                     list_reviews.append(review)
             return list_reviews
+
+        @property
+        def amenities(self):
+            """Returns the list of Amenity instances.
+            """
+            list_amenities = []
+            for amenity in models.storage.all(Amenity).values:
+                if self.id == amenity.place_id:
+                    list_amenities.append(amenity)
+            return list_amenities
+
+        @amenities.setter
+        def amenities(self, obj):
+            """Adds an Amenity.id.
+            """
+            if type(obj) == 'Amenity':
+                self.amenity_ids.append(obj.id)
