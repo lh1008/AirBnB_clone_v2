@@ -6,6 +6,7 @@ from datetime import datetime
 
 t = datetime.now()
 
+
 def do_pack():
     """ Method to generate the .tgz file """
     if path.exists('./versions'):
