@@ -15,5 +15,5 @@ def do_pack():
         time = 'versions/web_static_{}{}{}{}{}{}.tgz'\
             .format(t.year, t.month, t.day, t.hour, t.minute, t.second)
         local("tar -cvzf " + time + " ./web_static/")
-        if local.succeeded:
+        if local:
             return t
