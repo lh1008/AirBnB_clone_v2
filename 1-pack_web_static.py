@@ -9,13 +9,10 @@ t = datetime.now()
 
 def do_pack():
     """ Method to generate the .tgz file """
-    if path.exists('./versions'):
-        return None
-    else:
-        makedirs('versions', exist_ok=True)
-        time = 'versions/web_static_{}{}{}{}{}{}.tgz'\
-            .format(t.year, t.month, t.day, t.hour, t.minute, t.second)
-        check = local("tar -cvzf " + time + " ./web_static/")
-        if check.succeeded:
-            return t
-        return None
+    makedirs('versions', exist_ok=True)
+    time = 'versions/web_static_{}{}{}{}{}{}.tgz'\
+           .format(t.year, t.month, t.day, t.hour, t.minute, t.second)
+    check = local("tar -cvzf " + time + " ./web_static/")
+    if check.succeeded:
+        return t
+    return None
