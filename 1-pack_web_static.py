@@ -15,6 +15,7 @@ def do_pack():
         makedirs('versions', exist_ok=True)
         time = 'versions/web_static_{}{}{}{}{}{}.tgz'\
             .format(t.year, t.month, t.day, t.hour, t.minute, t.second)
-        local("tar -cvzf " + time + " ./web_static/")
-        if local:
+        check = local("tar -cvzf " + time + " ./web_static/")
+        if check.succeeded:
             return t
+        return None
