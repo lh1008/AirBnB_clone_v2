@@ -3,7 +3,7 @@
 Fabric module script that creates and
 distributes an archive to web server
 """
-from fabric.api import put, run, env,local
+from fabric.api import put, run, env, local
 from os import *
 import os.path
 from datetime import datetime
@@ -45,6 +45,7 @@ def do_deploy(archive_path):
 
         return True
     return False
+
 
 def deploy():
     """ Method that creates and distributes an archive """
