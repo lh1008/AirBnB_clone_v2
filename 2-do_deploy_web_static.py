@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Fabric module script that distributes an archive """
-from fabric.api import *
+from fabric.api import put, run, env
 from os import *
 import os.path
 from datetime import datetime
@@ -27,19 +27,21 @@ def do_deploy(archive_path):
 
     if os.path.exists(archive_path) is False:
         return False
+
     try:
-        path = archive_path
         put(archive_path, "/tmp/")
-        filename = os.path.basename(path)
-        (file, ext) = os.path.splitext(filename)
-        rel_path = "/data/web_static/releases/"
-        run("mkdir -p {}{}/".format(rel_path, file))
-        run("tar -xzvf /temp/{} -C {}{}/".format(filename, rel_path, file))
+        filename = os.path.basename(archive_path)
+        (file_s, ext) = os.path.splitext(filename)
+        run("mkdir -p /data/web_static/releases/{}/".format(file_s))
+        run("tar -xzvf /temp/{} -C /data/web_static/releases/{}/".
+            format(filename, file_s))
         run("rm -f /tmp/{}".format(filename))
-        run("mv {}{}/web_static/* {}{}/".format(rel_path, file, rel_path, filename))
-        run("rm -rf {}{}/web_static".format(rel_path, file))
+        run("mv /data/web_static/releases/{}/web_static/* {}{}/".
+            format(file_s, rel_path, filename))
+        run("rm -rf /data/web_static/releases/{}/web_static".format(file_s))
         run("rm -rf /data/web_static/current")
-        run("ln -sf {}{}/ /data/web_static/current".format(rel_path, file))
+        run("ln -sf /data/web_static/releases/{}/ /data/web_static/current".
+            format(file_s))
 
         return True
 
