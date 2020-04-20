@@ -25,25 +25,20 @@ def do_pack():
 def do_deploy(archive_path):
     """ Method that distributes and archive to web servers """
 
-    if os.path.exists(archive_path) is False:
-        return False
+    if os.path.exists(archive_path):
 
-    try:
         put(archive_path, "/tmp/")
         filename = os.path.basename(archive_path)
-        (file_s, ext) = os.path.splitext(filename)
-        run("mkdir -p /data/web_static/releases/{}/".format(file_s))
-        run("tar -xzvf /temp/{} -C /data/web_static/releases/{}/".
-            format(filename, file_s))
+        (file, ext) = os.path.splitext(filename)
+        rel_path = "/data/web_static/releases/"
+        run("mkdir -p {}{}/".format(rel_path, file))
+        run("tar -xzvf /tmp/{} -C {}{}/".format(filename, rel_path, file))
         run("rm -f /tmp/{}".format(filename))
-        run("mv /data/web_static/releases/{}/web_static/* {}{}/".
-            format(file_s, rel_path, filename))
-        run("rm -rf /data/web_static/releases/{}/web_static".format(file_s))
+        run("mv {}{}/web_static/* {}{}/".format(rel_path,
+                                                file, rel_path, file))
+        run("rm -rf {}{}/web_static".format(rel_path, file))
         run("rm -rf /data/web_static/current")
-        run("ln -sf /data/web_static/releases/{}/ /data/web_static/current".
-            format(file_s))
+        run("ln -sf {}{}/ /data/web_static/current".format(rel_path, file))
 
         return True
-
-    except:
-        return False
+    return False
