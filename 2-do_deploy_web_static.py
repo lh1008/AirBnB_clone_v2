@@ -2,15 +2,13 @@
 """ Fabric module script that distributes an archive """
 from fabric.api import *
 from os import *
+import os.path
 from datetime import datetime
 
 t = datetime.now()
 
-env.user = 'ubuntu'
 env.hosts = ['35.237.146.194', '35.243.176.223']
-# env.user = 'root'
-# env.hosts = ['770e6f93930c@19.hbtn-cod.io']
-# env.password = '3f8972ab387289f35b7d'
+env.user = 'ubuntu'
 
 
 def do_pack():
@@ -26,15 +24,24 @@ def do_pack():
 
 def do_deploy(archive_path):
     """ Method that distributes and archive to web servers """
-    path = archive_path
-    put(archive_path, "/tmp/")
-    filename = os.path.basename(path)
-    (file, ext) = os.path.splitext(filename)
-    rel_path = "/data/web_static/releases/"
-    run("mkdir -p {}{}/".format(rel_path, file))
-    run("tar -xzvf /temp/{} -C {}{}/".format(filename, rel_path, file))
-    run("rm -f /tmp/{}".format(filename))
-    run("mv {}{}/web_static/* {}{}/".format(rel_path, file, rel_path, filename))
-    run("rm -rf {}{}/web_static".format(rel_path, file))
-    run("rm -rf /data/web_static/current")
-    run("ln -sf {}{}/ /data/web_static/current".format(rel_path, file))
+
+    if os.path.exists(archive_path) is False:
+        return False
+    try:
+        path = archive_path
+        put(archive_path, "/tmp/")
+        filename = os.path.basename(path)
+        (file, ext) = os.path.splitext(filename)
+        rel_path = "/data/web_static/releases/"
+        run("mkdir -p {}{}/".format(rel_path, file))
+        run("tar -xzvf /temp/{} -C {}{}/".format(filename, rel_path, file))
+        run("rm -f /tmp/{}".format(filename))
+        run("mv {}{}/web_static/* {}{}/".format(rel_path, file, rel_path, filename))
+        run("rm -rf {}{}/web_static".format(rel_path, file))
+        run("rm -rf /data/web_static/current")
+        run("ln -sf {}{}/ /data/web_static/current".format(rel_path, file))
+
+        return True
+
+    except:
+        return False
