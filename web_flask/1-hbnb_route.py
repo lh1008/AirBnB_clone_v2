@@ -9,6 +9,7 @@ def main():
     """ Method that returns displayed message """
     return 'Hello HBNB!'
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hello():
     """ Method routing to hbnb decorator """
