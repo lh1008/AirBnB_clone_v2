@@ -32,7 +32,7 @@ def py_text(text):
         return 'Python %s' % escape(text.replace("_", " "))
 
 
-@app.route('/number/<int:n>')
+@app.route('/number/<int:n>', strict_slashes=False)
 def n_int(n):
     """ Method that displays n is an int """
     return '%d is number' % n
