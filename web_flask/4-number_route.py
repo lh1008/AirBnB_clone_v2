@@ -32,10 +32,10 @@ def py_text(text):
         return 'Python %s' % escape(text.replace("_", " "))
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
+@app.route('/number/<int:n>')
 def n_int(n):
     """ Method that displays n is an int """
-    return '%d is number' % n
+    return '%d is a number' % n
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
